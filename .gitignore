@@ -1,0 +1,7 @@
+# User-specific stuff
+.idea/*
+!.idea/modules.xml
+!.idea/encodings.xml
+
+# IntelliJ
+out/
