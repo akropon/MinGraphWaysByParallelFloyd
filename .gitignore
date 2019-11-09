@@ -5,3 +5,9 @@
 
 # IntelliJ
 out/
+
+# generated LaTex files
+report/*
+!report/*.tex
+!repott/*.bib
+!report/*.bbl
