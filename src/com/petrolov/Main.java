@@ -23,23 +23,27 @@ public class Main {
         long[] resultTimes = new long[REPEAT_COUNT];
         FloydParallelProcessor floydParallelProcessor = new FloydParallelProcessor();
 
-        for (int iSize = 0; iSize < SIZES.length; iSize++) {
-            out.println("size = " + SIZES[iSize]);
-            for (int iThreadCount = 0; iThreadCount < THREAD_COUNTS.length; iThreadCount++) {
-                out.print("size = " + SIZES[iSize] + ", threadCount = " + THREAD_COUNTS[iThreadCount] + " ");
-                floydParallelProcessor.setNumOfThreads(THREAD_COUNTS[iThreadCount]);
-                for (int r = 0; r < REPEAT_COUNT; r++) {
-                    out.print(".");
-                    Matrix matrix = processInitialization(SIZES[iSize], System.currentTimeMillis());
-                    Result result = floydParallelProcessor.process(matrix);
-                    resultTimes[r] = result.time;
+        try {
+            for (int iSize = 0; iSize < SIZES.length; iSize++) {
+                out.println("size = " + SIZES[iSize]);
+                for (int iThreadCount = 0; iThreadCount < THREAD_COUNTS.length; iThreadCount++) {
+                    out.print("size = " + SIZES[iSize] + ", threadCount = " + THREAD_COUNTS[iThreadCount] + " ");
+                    floydParallelProcessor.setNumOfThreads(THREAD_COUNTS[iThreadCount]);
+                    for (int r = 0; r < REPEAT_COUNT; r++) {
+                        out.print(".");
+                        Matrix matrix = processInitialization(SIZES[iSize], System.currentTimeMillis());
+                        Result result = floydParallelProcessor.process(matrix);
+                        resultTimes[r] = result.time;
+                    }
+                    avgResultTimes[iSize][iThreadCount] = getAvg(resultTimes);
+                    out.println();
                 }
-                avgResultTimes[iSize][iThreadCount] = getAvg(resultTimes);
-                out.println();
             }
-        }
 
-        floydParallelProcessor.dispose();
+        }
+        finally {
+            floydParallelProcessor.dispose();
+        }
 
         printResults(avgResultTimes);
     }
