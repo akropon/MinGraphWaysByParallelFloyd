@@ -10,14 +10,12 @@ import static java.lang.System.out;
  */
 public class Main {
 
-    private static final int[] SIZES = {300};  // nodes count
+    private static final int[] SIZES = {10, 100, 300, 500, 1000};  // nodes count
     private static final int[] THREAD_COUNTS = {1, 2, 4, 8, 16, 32};
     private static final int REPEAT_COUNT = 5;
 
     public static void main(String[] args) {
-        for (int i = 0; i < 6; i++) {
-            doMeasure();
-        }
+        doMeasure();
     }
 
     private static void doMeasure() {
@@ -26,14 +24,18 @@ public class Main {
         FloydParallelProcessor floydParallelProcessor = new FloydParallelProcessor();
 
         for (int iSize = 0; iSize < SIZES.length; iSize++) {
+            out.println("size = " + SIZES[iSize]);
             for (int iThreadCount = 0; iThreadCount < THREAD_COUNTS.length; iThreadCount++) {
+                out.print("size = " + SIZES[iSize] + ", threadCount = " + THREAD_COUNTS[iThreadCount] + " ");
                 floydParallelProcessor.setNumOfThreads(THREAD_COUNTS[iThreadCount]);
                 for (int r = 0; r < REPEAT_COUNT; r++) {
+                    out.print(".");
                     Matrix matrix = processInitialization(SIZES[iSize], System.currentTimeMillis());
                     Result result = floydParallelProcessor.process(matrix);
                     resultTimes[r] = result.time;
                 }
                 avgResultTimes[iSize][iThreadCount] = getAvg(resultTimes);
+                out.println();
             }
         }
 
