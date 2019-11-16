@@ -9,5 +9,6 @@ out/
 # generated LaTex files
 report/*
 !report/*.tex
-!repott/*.bib
+!report/*.bib
 !report/*.bbl
+!report/*.pptx
